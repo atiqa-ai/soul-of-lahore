@@ -46,20 +46,20 @@ export const places: Place[] = [
     longDescription: 'Designed by architect Nasreddin Murat-Khan, the minaret\'s design blends Mughal, Islamic, and modern styles. Its base is shaped like a five-pointed star, with platforms rising in tiers. The monument is surrounded by Iqbal Park, where millions gather for national celebrations. At night, the minaret is dramatically lit, visible from across the city. It stands as the proud symbol of Pakistan\'s independence movement and the dream of Allama Iqbal.',
     gradient: 'from-green-900/80 via-emerald-700/40 to-green-900/80',
     media: [
-      // EXT: 1 — DRONE APPROACH — Aerial drone video revealing the monument
-      { id: 'm4', type: 'video', src: 'https://videos.pexels.com/video-files/12102419/12102419-hd_1080_1920_60fps.mp4', caption: 'Approaching Minar-e-Pakistan', description: 'A sweeping aerial approach over Greater Iqbal Park reveals the 70-metre tower rising from its five-pointed star base — the monument where Pakistan\'s founding resolution was passed on 23 March 1940.', zone: 'drone_approach' },
-      // EXT: 2 — Aerial view of the five-pointed star foundation
-      { id: 'm10', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/d/db/Aerial_view_of_Minar_e_Pakistan.jpg', caption: 'The Star Foundation', description: 'From above, the monument\'s five-pointed star base reveals its perfect geometric symmetry — each point representing a principle of the Pakistan movement, etched into the landscape of Greater Iqbal Park.', zone: 'entrance' },
-      // EXT: 3 — Full monument from ground
-      { id: 'm1', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Minar-e-Pakistan%28Lahore%29.jpg', caption: 'The Tower of Freedom', description: 'The 70-metre Minar-e-Pakistan rises against Lahore\'s sky — designed by architect Nasreddin Murat-Khan, its four-tiered structure blends Mughal, Islamic, and modern architectural traditions.', zone: 'pathway' },
-      // INT: 4 — Stairs leading up to the base
-      { id: 'm9', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Stairs_to_Minar-e-Pakistan.jpg', caption: 'Ascending the Monument', description: 'The 324 steps rise through the interior of the tower base, passing four platforms that each represent a stage of Pakistan\'s freedom movement — from the 1940 Resolution to independence in 1947.', zone: 'main_structure' },
-      // INT: 5 — View from the base looking up at the tower
-      { id: 'm2', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Minar-e-Pakistan_%28Iqbal_Park%29.jpg', caption: 'Looking Up from the Base', description: 'From the base platform, the tapered spire rises 70 metres overhead — its balconies and terraces clad in marble and stone, each level narrowing as it reaches toward the sky.', zone: 'interior' },
-      // INT: 6 — Architectural detail of the tower
-      { id: 'm5', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Minar-e-Pakistan_%2C_Lahore_%2C_Punjab.jpg', caption: 'Craftsmanship in Stone', description: 'The tower\'s intricate balconies and tiered platforms reveal Nasreddin Murat-Khan\'s architectural mastery — Taxila stone, marble, and mosaic work blending in geometric harmony on the monument\'s facade.', zone: 'details' },
-      // INT: 7 — Night departure view
-      { id: 'm3', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Minar-e-Pakistan%2C_Lahore..jpg', caption: 'Night Farewell', description: 'As night falls over Lahore, the Minar-e-Pakistan is dramatically illuminated — its glowing silhouette visible across the city, a timeless beacon of freedom standing guard over Iqbal Park.', zone: 'exit_transition' },
+      // 1 — DRONE — Aerial drone video revealing the monument
+      { id: 'm_vid', type: 'video', src: 'https://videos.pexels.com/video-files/12102419/12102419-hd_1080_1920_60fps.mp4', caption: 'Approaching Minar-e-Pakistan', description: 'A sweeping aerial approach over Greater Iqbal Park reveals the 70-metre tower rising from its five-pointed star base — the monument where Pakistan\'s founding resolution was passed on 23 March 1940.', zone: 'drone_approach' },
+      // 2 — TOP-DOWN FLOWER VIEW — Aerial showing the star foundation like a flower
+      { id: 'm4', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Top_Aerial_View_of_Minar_e_Pakistan.jpg', caption: 'The Flower Star', description: 'From directly above, the monument\'s base blossoms like a five-pointed flower — each petal a platform clad in Taxila stone, the central spire rising from its heart like a stem reaching for the sky.', zone: 'entrance' },
+      // 3 — PARK VIEW — Monument seen within Iqbal Park
+      { id: 'm2', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/0/06/Minar-e-Pakistan_%28Iqbal_Park%29.jpg', caption: 'Minar in the Park', description: 'The Minar-e-Pakistan stands majestically within Greater Iqbal Park — 141 acres of green lawns surround the monument where the Pakistan Resolution was passed in 1940, now a gathering place for millions.', zone: 'pathway' },
+      // 4 — FULL TOWER — The complete monument from ground level
+      { id: 'm1', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Minar-e-Pakistan%28Lahore%29.jpg', caption: 'Tower of Freedom', description: 'The 70-metre spire rises in four distinct tiers — each level representing a stage of Pakistan\'s freedom movement, from the 1940 Resolution to independence in 1947.', zone: 'main_structure' },
+      // 5 — INTERIOR STAIRS — The stairs with wall inscriptions
+      { id: 'm9', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Stairs_to_Minar-e-Pakistan.jpg', caption: 'Inscribed Walls & Steps', description: 'Inside the monument, 324 steps wind through the tower base past walls adorned with inscribed text and historical panels — each gallery platform chronicling the journey from resolution to nationhood.', zone: 'interior' },
+      // 6 — ARCHITECTURAL DETAIL — Close-up of the tower facade and inscriptions
+      { id: 'm5', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Minar-e-Pakistan_%2C_Lahore_%2C_Punjab.jpg', caption: 'Stone & Scripture', description: 'The tower\'s facade blends carved stone, marble inlay, and inscribed calligraphy — Quranic verses and commemorative text adorn the walls of architect Nasreddin Murat-Khan\'s masterpiece.', zone: 'details' },
+      // 7 — NIGHT VIEW — Illuminated tower at night
+      { id: 'm3', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Minar-e-Pakistan%2C_Lahore..jpg', caption: 'Night Over Lahore', description: 'As night falls, the Minar-e-Pakistan is dramatically illuminated — its glowing silhouette visible for miles across Lahore, a timeless beacon of freedom watching over Iqbal Park.', zone: 'exit_transition' },
     ],
   },
   {
