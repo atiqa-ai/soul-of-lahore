@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import Link from 'next/link';
-import { places as allPlaces, type Place, ZONE_LABELS } from '@/data/places';
+import { places as allPlaces, type Place } from '@/data/places';
 import PlaceLogo from '@/app/components/PlaceLogo';
 
 function getNextPlace(currentSlug: string): Place | null {
@@ -24,6 +24,7 @@ interface PlaceClientProps {
 
 export default function PlaceClient({ place }: PlaceClientProps) {
   const headerRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLImageElement>(null);
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
   const bottomRef = useRef<HTMLElement>(null);
 
@@ -33,6 +34,9 @@ export default function PlaceClient({ place }: PlaceClientProps) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(headerRef.current, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      if (bgRef.current) {
+        gsap.fromTo(bgRef.current, { scale: 1 }, { scale: 1.15, duration: 12, ease: 'none', repeat: -1, yoyo: true });
+      }
     }, headerRef);
     return () => ctx.revert();
   }, [place.slug]);
@@ -54,8 +58,16 @@ export default function PlaceClient({ place }: PlaceClientProps) {
       </div>
 
       {/* Hero header */}
-      <section ref={headerRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center bg-gradient-to-b from-black via-gray-950 to-black">
-        <div className="max-w-3xl mx-auto">
+      <section ref={headerRef} className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center overflow-hidden">
+        {/* Cinematic background — first media item or place-specific */}
+        <img
+          ref={bgRef}
+          src={place.heroImage || (place.slug === 'minar-pakistan' ? 'https://www.dronestagr.am/wp-content/uploads/2018/01/10Jan2018_0005.jpg' : place.media[0]?.type === 'video' ? place.media[1]?.src : place.media[0]?.src)}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/80" />
+        <div className="max-w-3xl mx-auto relative z-10">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
             <div className="w-2 h-2 rounded-full bg-amber-500/40" />
@@ -80,6 +92,7 @@ export default function PlaceClient({ place }: PlaceClientProps) {
               alt={item.caption}
               className="absolute inset-0 w-full h-full object-cover"
               draggable={false}
+              style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
             />
           ) : (
             <video
@@ -95,17 +108,6 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           {/* Gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
-
-          {/* Zone label */}
-          {item.zone && (
-            <div className="absolute top-28 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-              <div className="px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-xl border border-white/10">
-                <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/70">
-                  {ZONE_LABELS[item.zone]}
-                </span>
-              </div>
-            </div>
-          )}
 
           {/* Caption */}
           {item.caption && (
