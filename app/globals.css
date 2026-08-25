@@ -326,15 +326,18 @@ img.loaded {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.875rem 2.5rem;
+  padding: 1rem 2.75rem;
   border-radius: 9999px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #fff;
-  background: linear-gradient(135deg, rgba(212, 168, 83, 0.15), rgba(212, 168, 83, 0.05));
-  border: 1px solid rgba(212, 168, 83, 0.3);
+  color: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.35), rgba(212, 168, 83, 0.12));
+  border: 1px solid rgba(212, 168, 83, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 0 20px rgba(212, 168, 83, 0.15), 0 0 40px rgba(212, 168, 83, 0.05);
   transition: all 0.4s ease;
   overflow: hidden;
   cursor: pointer;
@@ -348,8 +351,8 @@ img.loaded {
   transition: opacity 0.4s ease;
 }
 .cta-button:hover {
-  border-color: rgba(212, 168, 83, 0.6);
-  box-shadow: 0 0 30px rgba(212, 168, 83, 0.3), 0 0 60px rgba(212, 168, 83, 0.1);
+  border-color: rgba(212, 168, 83, 0.7);
+  box-shadow: 0 0 30px rgba(212, 168, 83, 0.35), 0 0 60px rgba(212, 168, 83, 0.15);
   transform: translateY(-2px);
 }
 .cta-button:hover::before {

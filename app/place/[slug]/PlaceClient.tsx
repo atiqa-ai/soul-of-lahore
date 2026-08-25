@@ -26,6 +26,7 @@ export default function PlaceClient({ place }: PlaceClientProps) {
   const headerRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLImageElement>(null);
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+  const textAnimateRefs = useRef<(HTMLDivElement | null)[]>([]);
   const bottomRef = useRef<HTMLElement>(null);
 
   const nextPlace = getNextPlace(place.slug);
@@ -38,7 +39,27 @@ export default function PlaceClient({ place }: PlaceClientProps) {
         gsap.fromTo(bgRef.current, { scale: 1 }, { scale: 1.15, duration: 12, ease: 'none', repeat: -1, yoyo: true });
       }
     }, headerRef);
-    return () => ctx.revert();
+    const observers: IntersectionObserver[] = [];
+    textAnimateRefs.current.forEach((el) => {
+      if (!el) return;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+            observer.unobserve(el);
+          }
+        },
+        { threshold: 0.25 }
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+    return () => {
+      ctx.revert();
+      observers.forEach(o => o.disconnect());
+    };
   }, [place.slug]);
 
   return (
@@ -65,6 +86,7 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           src={place.heroImage || (place.slug === 'minar-pakistan' ? 'https://www.dronestagr.am/wp-content/uploads/2018/01/10Jan2018_0005.jpg' : place.media[0]?.type === 'video' ? place.media[1]?.src : place.media[0]?.src)}
           alt=""
           className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/80" />
         <div className="max-w-3xl mx-auto relative z-10">
@@ -87,12 +109,12 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           className="relative w-full h-screen overflow-hidden snap-start"
         >
           {item.type === 'image' ? (
-            <img
-              src={item.src}
-              alt={item.caption}
-              className="absolute inset-0 w-full h-full object-cover"
-              draggable={false}
-              style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
+            <div
+              className="absolute inset-0 w-full h-full bg-cover bg-center"
+              style={{
+                backgroundImage: `url('${item.src}')`,
+                ...(item.objectPosition ? { backgroundPosition: item.objectPosition } : {})
+              }}
             />
           ) : (
             <video
@@ -109,18 +131,17 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
 
-          {/* Caption */}
-          {item.caption && (
-            <div className="absolute top-36 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-center px-6 max-w-2xl w-full">
-              <h2 className="text-xl md:text-3xl font-bold text-white/90 tracking-wide">
+          {/* Caption + Description */}
+          <div
+            ref={(el) => { textAnimateRefs.current[i] = el; }}
+            className="absolute inset-0 z-10 pointer-events-none flex flex-col items-center justify-center px-8"
+          >
+            {item.caption && (
+              <h2 className="text-xl md:text-3xl font-bold text-white/90 tracking-wide text-center max-w-2xl mb-4">
                 {item.caption}
               </h2>
-            </div>
-          )}
-
-          {/* Description */}
-          <div className="absolute bottom-24 md:bottom-32 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-center px-8 max-w-3xl w-full">
-            <p className="text-sm md:text-base text-white/80 leading-relaxed tracking-wide max-w-2xl mx-auto [text-shadow:_0_2px_12px_rgba(0,0,0,0.5)]">
+            )}
+            <p className="text-sm md:text-base text-white/80 leading-relaxed tracking-wide max-w-2xl mx-auto text-center [text-shadow:_0_2px_12px_rgba(0,0,0,0.5)]">
               {item.description}
             </p>
           </div>

@@ -38,11 +38,20 @@ export default function HeroSection() {
     let isDragging = false;
     let prevPointerX = 0;
     let dragVelocity = 0;
+    let sectionVisible = true;
+    const sectionObserver = new IntersectionObserver(([entry]) => {
+      sectionVisible = entry.isIntersecting;
+      if (sectionVisible && !animId) {
+        clock = new THREE.Clock();
+        render();
+      }
+    }, { threshold: 0.01 });
+    if (sectionRef.current) sectionObserver.observe(sectionRef.current);
     let planes: { mesh: THREE.Mesh; userData: any }[];
     let videoElements: HTMLVideoElement[];
 
     const render = () => {
-      if (!isVisible) { animId = 0; return; }
+      if (!isVisible || !sectionVisible) { animId = 0; return; }
       animId = requestAnimationFrame(render);
       const elapsed = clock.getElapsedTime();
 
@@ -100,7 +109,7 @@ export default function HeroSection() {
       scene.fog = new THREE.FogExp2(new THREE.Color(0x050505), 0.018);
 
       const lowPower = window.devicePixelRatio < 2 || /Android|iPhone|iPad/i.test(navigator.userAgent);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, lowPower ? 1 : 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
 
       const particleCount = lowPower ? 100 : 250;
       const particleGeo = new THREE.BufferGeometry();
@@ -196,7 +205,7 @@ export default function HeroSection() {
           video.loop = true;
           video.playsInline = true;
           video.crossOrigin = 'anonymous';
-          video.preload = 'metadata';
+          video.preload = 'none';
           video.style.display = 'none';
           document.body.appendChild(video);
           videoElements.push(video);
@@ -260,6 +269,7 @@ export default function HeroSection() {
 
       return () => {
         cancelAnimationFrame(animId);
+        sectionObserver.disconnect();
         window.removeEventListener('resize', onResize);
         canvas.removeEventListener('pointerdown', onPointerDown);
         canvas.removeEventListener('pointermove', onPointerMove);
@@ -346,16 +356,16 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
+    <section ref={sectionRef} className="relative w-full overflow-hidden" style={{ minHeight: '100dvh' }}>
       {/* Three.js 360° orbiting media background — cinematic rotation of all media */}
       <div ref={bgRef} className="absolute inset-0 w-full h-full will-change-transform">
         <div ref={mediaRef} className="absolute inset-0" />
       </div>
 
       {/* Main gradient overlays */}
-      <div ref={overlayRef} className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 z-[1]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/60 z-[1]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50 z-[1]" />
+      <div ref={overlayRef} className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/5 to-black/40 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/10 z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10 z-[1]" />
 
       {/* Chaos overlay — pulsing vignette & grain */}
       <div ref={chaosOverlayRef} className="absolute inset-0 z-[2] pointer-events-none opacity-0 mix-blend-overlay">

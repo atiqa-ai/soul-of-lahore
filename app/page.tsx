@@ -1,8 +1,10 @@
 'use client';
 
-import HeroSection from './components/HeroSection';
-import DestinationsSection from './components/DestinationsSection';
+import dynamic from 'next/dynamic';
 import SoulOfLahoreLogo from './components/SoulOfLahoreLogo';
+
+const HeroSection = dynamic(() => import('./components/HeroSection'), { ssr: false });
+const DestinationsSection = dynamic(() => import('./components/DestinationsSection'), { ssr: false });
 
 export default function Home() {
   return (

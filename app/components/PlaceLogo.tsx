@@ -10,10 +10,10 @@ interface PlaceLogoProps {
 }
 
 const PLACE_IMAGES: Record<string, string> = {
-  'badshahi': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Grand_Architecture_of_Badshahi_Mosque.jpg',
+  'badshahi': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Badshahi_Mosque_%2C_Lahore.jpg',
   'minar': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Minar-e-Pakistan%28Lahore%29.jpg',
-  'lahore-fort': 'https://upload.wikimedia.org/wikipedia/commons/9/94/Shahi_Qila_%28Lahore_Fort_Gate%29.JPG',
-  'iqbal-tomb': 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Muhammad_Allama_Iqbal%E2%80%99s_Tomb.JPG',
+  'lahore-fort': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Shahi_Qila_-_The_Lahore_Fort.jpg',
+  'iqbal-tomb': 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Grave_of_Muhammad_Iqbal.jpg',
   'wazir-khan': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Wazir_Mosque%2C_Lahore.jpg',
   'sheesh-mahal': 'https://upload.wikimedia.org/wikipedia/commons/8/89/Sheesh_Mahal_in_Lahore_Fort.jpg',
   'quaid-e-azam-library': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Montgomery_Hall_%28Quaid-e-Azam_Library%29_on_a_pleasant_day.jpg',

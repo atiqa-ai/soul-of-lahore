@@ -21,6 +21,7 @@ export default function ParticleField({ className = '' }: { className?: string }
     let particles: Particle[] = [];
     let mouseX = -1000;
     let mouseY = -1000;
+    let sectionVisible = true;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -29,6 +30,12 @@ export default function ParticleField({ className = '' }: { className?: string }
     resize();
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    const sectionObserver = new IntersectionObserver(([entry]) => {
+      sectionVisible = entry.isIntersecting;
+      if (sectionVisible && !animId) animate();
+    }, { threshold: 0.01 });
+    sectionObserver.observe(canvas);
 
     const count = Math.min(60, Math.floor((window.innerWidth * window.innerHeight) / 20000));
 
@@ -48,6 +55,7 @@ export default function ParticleField({ className = '' }: { className?: string }
     }
 
     const animate = () => {
+      if (!sectionVisible) { animId = 0; return; }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (const p of particles) {
@@ -94,6 +102,7 @@ export default function ParticleField({ className = '' }: { className?: string }
 
     return () => {
       cancelAnimationFrame(animId);
+      sectionObserver.disconnect();
       window.removeEventListener('resize', resize);
     };
   }, []);
