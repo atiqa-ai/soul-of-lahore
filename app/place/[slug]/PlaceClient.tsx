@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import Link from 'next/link';
 import { places as allPlaces, type Place } from '@/data/places';
 import PlaceLogo from '@/app/components/PlaceLogo';
+import SoulOfLahoreLogo from '@/app/components/SoulOfLahoreLogo';
 
 function getNextPlace(currentSlug: string): Place | null {
   const idx = allPlaces.findIndex(p => p.slug === currentSlug);
@@ -56,6 +57,21 @@ export default function PlaceClient({ place }: PlaceClientProps) {
       observer.observe(el);
       observers.push(observer);
     });
+    if (bottomRef.current) {
+      bottomRef.current.style.opacity = '0';
+      bottomRef.current.style.transform = 'translateY(30px)';
+      const bottomObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            gsap.to(bottomRef.current, { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out' });
+            bottomObserver.unobserve(entry.target);
+          }
+        },
+        { threshold: 0.15 }
+      );
+      bottomObserver.observe(bottomRef.current);
+      observers.push(bottomObserver);
+    }
     return () => {
       ctx.revert();
       observers.forEach(o => o.disconnect());
@@ -149,62 +165,122 @@ export default function PlaceClient({ place }: PlaceClientProps) {
       ))}
 
       {/* Bottom navigation */}
-      <section ref={bottomRef} className="relative w-full min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-t from-black via-gray-950 to-black">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-            <div className="w-2 h-2 rounded-full bg-amber-500/40" />
-            <div className="h-px w-12 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
-          </div>
-          <h2 className="text-2xl md:text-4xl font-bold mb-3 text-white/90">{place.title}</h2>
-          <p className="text-sm text-white/50 mb-10">{place.subtitle}</p>
+      <section ref={bottomRef} className="relative w-full min-h-[60vh] flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-b from-black via-gray-950 to-black overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
 
-          <div className="flex items-center justify-center gap-8">
-            <div>
-              {prevPlace ? (
-                <Link
-                  href={`/place/${prevPlace.slug}`}
-                  className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all duration-300"
-                >
-                  <svg className="w-4 h-4 text-white/60 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  <span className="text-xs tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors">{prevPlace.title}</span>
-                </Link>
-              ) : (
-                <Link
-                  href="/"
-                  className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all duration-300"
-                >
-                  <svg className="w-4 h-4 text-white/60 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  <span className="text-xs tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors">Home</span>
-                </Link>
-              )}
+        <div className="relative z-10 max-w-2xl mx-auto text-center">
+          {/* Branding */}
+          <div className="flex flex-col items-center mb-6">
+            <SoulOfLahoreLogo size={32} variant="footer" className="mb-3" />
+            <span className="text-[10px] tracking-[0.4em] uppercase text-white/30">Soul of Lahore</span>
+          </div>
+
+          {/* Gold divider */}
+          <div className="divider-gold w-12 mx-auto mb-6" />
+
+          {/* Place index */}
+          <div className="flex flex-col items-center gap-2 mb-6">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-amber-500/60">
+              {String(allPlaces.findIndex(p => p.slug === place.slug) + 1).padStart(2, '0')} / {String(allPlaces.length).padStart(2, '0')}
+            </span>
+            <div className="flex items-center gap-1.5">
+              {allPlaces.map((_, i) => (
+                <div
+                  key={i}
+                  className={`rounded-full transition-all duration-500 ${
+                    i === allPlaces.findIndex(p => p.slug === place.slug)
+                      ? 'w-5 h-1.5 bg-amber-500/70'
+                      : 'w-1.5 h-1.5 bg-white/15'
+                  }`}
+                />
+              ))}
             </div>
-            <div>
-              {nextPlace ? (
-                <Link
-                  href={`/place/${nextPlace.slug}`}
-                  className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all duration-300"
-                >
-                  <span className="text-xs tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors">{nextPlace.title}</span>
-                  <svg className="w-4 h-4 text-white/60 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              ) : (
-                <Link
-                  href="/"
-                  className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all duration-300"
-                >
-                  <span className="text-xs tracking-[0.2em] uppercase text-white/60 group-hover:text-white transition-colors">Complete</span>
-                  <svg className="w-4 h-4 text-white/60 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              )}
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl md:text-4xl font-bold mb-2 text-white/90">{place.title}</h2>
+          <p className="text-sm text-amber-400/60 tracking-wide mb-10">{place.subtitle}</p>
+
+          {/* Prev / Next buttons */}
+          <div className="flex items-center justify-center gap-4 md:gap-6 mb-10">
+            {prevPlace ? (
+              <Link
+                href={`/place/${prevPlace.slug}`}
+                className="group flex items-center gap-3 px-5 md:px-6 py-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 hover:shadow-[0_0_20px_rgba(212,168,83,0.08)] transition-all duration-400"
+              >
+                <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 group-hover:border-amber-500/20 transition-colors">
+                  <PlaceLogo placeId={prevPlace.id} size={28} animated={false} />
+                </div>
+                <div className="text-left">
+                  <span className="block text-[9px] tracking-[0.2em] uppercase text-white/30">Previous</span>
+                  <span className="block text-xs font-medium text-white/60 group-hover:text-white transition-colors leading-tight">{prevPlace.title}</span>
+                </div>
+              </Link>
+            ) : (
+              <Link
+                href="/"
+                className="group flex items-center gap-3 px-5 md:px-6 py-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 hover:shadow-[0_0_20px_rgba(212,168,83,0.08)] transition-all duration-400"
+              >
+                <svg className="w-5 h-5 text-white/40 transition-all group-hover:-translate-x-1 group-hover:text-amber-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                </svg>
+                <div className="text-left">
+                  <span className="block text-[9px] tracking-[0.2em] uppercase text-white/30">Back to</span>
+                  <span className="block text-xs font-medium text-white/60 group-hover:text-white transition-colors">Home</span>
+                </div>
+              </Link>
+            )}
+
+            {nextPlace ? (
+              <Link
+                href={`/place/${nextPlace.slug}`}
+                className="group flex items-center gap-3 px-5 md:px-6 py-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 hover:shadow-[0_0_20px_rgba(212,168,83,0.08)] transition-all duration-400"
+              >
+                <div className="text-right">
+                  <span className="block text-[9px] tracking-[0.2em] uppercase text-white/30">Next</span>
+                  <span className="block text-xs font-medium text-white/60 group-hover:text-white transition-colors leading-tight">{nextPlace.title}</span>
+                </div>
+                <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 group-hover:border-amber-500/20 transition-colors">
+                  <PlaceLogo placeId={nextPlace.id} size={28} animated={false} />
+                </div>
+              </Link>
+            ) : (
+              <Link
+                href="/"
+                className="group flex items-center gap-3 px-5 md:px-6 py-3.5 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 hover:bg-white/[0.08] hover:border-amber-500/30 hover:shadow-[0_0_20px_rgba(212,168,83,0.08)] transition-all duration-400"
+              >
+                <div className="text-right">
+                  <span className="block text-[9px] tracking-[0.2em] uppercase text-white/30">Journey</span>
+                  <span className="block text-xs font-medium text-white/60 group-hover:text-white transition-colors">Complete</span>
+                </div>
+                <svg className="w-5 h-5 text-white/40 transition-all group-hover:translate-x-1 group-hover:text-amber-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            )}
+          </div>
+
+          {/* View All Places link */}
+          <Link
+            href="/places"
+            className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-amber-400/60 hover:text-amber-300 transition-colors duration-300 group"
+          >
+            View All Places
+            <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+
+          {/* Bottom branding */}
+          <div className="mt-10 pt-6 border-t border-white/5">
+            <p className="text-[9px] tracking-[0.3em] uppercase text-white/15 mb-2">Every Brick Tells A Story.</p>
+            <div className="flex items-center justify-center gap-3 text-[8px] tracking-[0.2em] uppercase text-white/10">
+              <span>12 Landmarks</span>
+              <span className="w-px h-2.5 bg-white/10" />
+              <span>7 Zones Each</span>
+              <span className="w-px h-2.5 bg-white/10" />
+              <span>84 Stories</span>
             </div>
           </div>
         </div>
