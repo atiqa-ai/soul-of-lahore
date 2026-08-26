@@ -1,0 +1,10 @@
+node_modules
+.next
+*.log
+dev-error.txt
+dev-output.txt
+dev-test-log.txt
+tsconfig.tsbuildinfo
+.env
+.env.local
+.env.*.local
