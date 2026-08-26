@@ -217,13 +217,17 @@ export default function PlacesPage() {
           const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = () => {
-            const canvas = buildCanvas((ctx) => {
-              const s = Math.min(img.width, img.height);
-              ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
-            });
-            const tex = new THREE.CanvasTexture(canvas);
-            tex.colorSpace = THREE.SRGBColorSpace;
-            resolve(tex);
+            try {
+              const canvas = buildCanvas((ctx) => {
+                const s = Math.min(img.width, img.height);
+                ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+              });
+              const tex = new THREE.CanvasTexture(canvas);
+              tex.colorSpace = THREE.SRGBColorSpace;
+              resolve(tex);
+            } catch (_) {
+              makeFallback();
+            }
           };
           img.onerror = makeFallback;
           img.src = src;

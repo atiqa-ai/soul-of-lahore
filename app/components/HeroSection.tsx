@@ -19,7 +19,6 @@ export default function HeroSection() {
   const logoWrapRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const separatorRef = useRef<HTMLDivElement>(null);
 
   // Three.js 360° orbiting media background
@@ -311,11 +310,6 @@ export default function HeroSection() {
           { autoAlpha: 1, y: 0, scale: 1, duration: 1.6, ease: 'power3.out' }, '-=0.8');
       }
 
-      if (scrollRef.current) {
-        tl.fromTo(scrollRef.current, { autoAlpha: 0, y: 10 },
-          { autoAlpha: 1, y: 0, duration: 1.4 }, '-=0.6');
-      }
-
       if (separatorRef.current) {
         tl.fromTo(separatorRef.current, { scaleX: 0, autoAlpha: 0 },
           { scaleX: 1, autoAlpha: 1, duration: 2, ease: 'power3.inOut' }, '-=1');
@@ -423,37 +417,19 @@ export default function HeroSection() {
         <p ref={taglineRef} className="text-sm md:text-lg font-light italic text-white/60 text-center max-w-xl mb-6 md:mb-8">
           &ldquo;Every Brick Tells A Story.&rdquo;
         </p>
-
-        <div ref={ctaRef}>
-          <button onClick={() => router.push('/places')} className="cta-button group">
-            <span>Enter the Soul</span>
-            <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </button>
-        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div ref={scrollRef} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[5] text-center">
-        <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/30 mb-2">
-          Scroll to Explore
-        </p>
-        <div className="flex flex-col items-center gap-1">
-          <div className="w-5 h-8 rounded-full border border-white/15 flex justify-center">
-            <div className="w-1 h-2 rounded-full bg-gold mt-2" style={{
-              background: '#D4A853',
-              animation: 'scrollBounce 2.5s ease-in-out infinite',
-            }} />
-          </div>
-        </div>
+      {/* CTA button — positioned independently so scroll parallax doesn't move it */}
+      <div ref={ctaRef} className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-[5]">
+        <button onClick={() => router.push('/places')} className="cta-button group">
+          <span>Enter the Soul</span>
+          <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
       </div>
 
       <style>{`
-        @keyframes scrollBounce {
-          0%, 100% { transform: translateY(0); opacity: 1; }
-          50% { transform: translateY(8px); opacity: 0.2; }
-        }
         @keyframes chaosRay1 {
           0%, 100% { transform: rotate(20deg) translateX(0); opacity: 0.3; }
           25% { transform: rotate(22deg) translateX(5%); opacity: 0.6; }

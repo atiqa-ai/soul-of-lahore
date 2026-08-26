@@ -22,7 +22,7 @@ export default function DestinationsSection() {
 
   const handleTransitionComplete = useCallback(() => {
     if (navigatingTo) {
-      window.location.href = `/place/${navigatingTo}`;
+      window.location.href = '/places';
     }
   }, [navigatingTo]);
 
