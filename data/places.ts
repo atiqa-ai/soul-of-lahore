@@ -33,8 +33,8 @@ export interface Place {
   heroImage?: string;
 }
 
-const pexelsImg = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1600`;
-const unsplashImg = (id: string) => `https://images.unsplash.com/photo-${id}?w=1600`;
+const pexelsImg = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=400`;
+const unsplashImg = (id: string) => `https://images.unsplash.com/photo-${id}?w=400`;
 const pexelsVid = (id: number) => `https://videos.pexels.com/video-files/${id}/${id}-hd_1080_1920_60fps.mp4`;
 
 export const places: Place[] = [

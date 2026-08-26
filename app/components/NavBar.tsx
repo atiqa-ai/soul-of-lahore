@@ -4,11 +4,25 @@ import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
-import { places } from '@/data/places';
 import SoulOfLahoreLogo from './SoulOfLahoreLogo';
 import PlaceLogo from './PlaceLogo';
 
 const FEATURED = ['badshahi', 'minar', 'wazir-khan', 'sheesh-mahal'];
+
+const navPlaces = [
+  { id: 'minar', slug: 'minar-pakistan', title: 'Minar-e-Pakistan', subtitle: 'Monument of Freedom' },
+  { id: 'badshahi', slug: 'badshahi-mosque', title: 'Badshahi Mosque', subtitle: 'Mughal Grandeur' },
+  { id: 'iqbal-tomb', slug: 'allama-iqbal-tomb', title: 'Allama Iqbal Tomb', subtitle: 'Mazar-e-Iqbal' },
+  { id: 'lahore-fort', slug: 'lahore-fort', title: 'Shahi Qila', subtitle: 'The Royal Fort' },
+  { id: 'wazir-khan', slug: 'wazir-khan-mosque', title: 'Masjid Wazir Khan', subtitle: 'The Painted Mosque' },
+  { id: 'sheesh-mahal', slug: 'sheesh-mahal', title: 'Sheesh Mahal', subtitle: 'Palace of Mirrors' },
+  { id: 'library', slug: 'quaid-e-azam-library', title: 'Quaid-e-Azam Library', subtitle: 'Temple of Knowledge' },
+  { id: 'lahore-museum', slug: 'lahore-museum', title: 'Lahore Museum', subtitle: 'Wonder House of History' },
+  { id: 'jahangir-tomb', slug: 'tomb-of-jahangir', title: 'Tomb of Jahangir', subtitle: "Mughal Emperor's Rest" },
+  { id: 'lahore-zoo', slug: 'lahore-zoo', title: 'Lahore Zoo', subtitle: 'Wild Heart of the City' },
+  { id: 'shalimar', slug: 'shalimar-gardens', title: 'Shalimar Gardens', subtitle: 'Mughal Paradise Garden' },
+  { id: 'bagh-jinnah', slug: 'bagh-e-jinnah', title: 'Bagh-e-Jinnah', subtitle: 'Lawrence Gardens' },
+];
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -18,7 +32,7 @@ export default function NavBar() {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === '/';
-  const currentPlace = places.find(p => pathname.includes(p.slug));
+  const currentPlace = navPlaces.find(p => pathname.includes(p.slug));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -157,7 +171,7 @@ export default function NavBar() {
               <div className="h-px flex-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
             </div>
             <div className="grid grid-cols-4 gap-2">
-              {places.filter(p => FEATURED.includes(p.id)).map((place) => (
+              {navPlaces.filter(p => FEATURED.includes(p.id)).map((place) => (
                 <Link
                   key={place.id}
                   href={`/place/${place.slug}`}
@@ -183,7 +197,7 @@ export default function NavBar() {
               <div className="h-px flex-1 bg-gradient-to-l from-white/10 to-transparent" />
             </div>
             <div className="space-y-0.5">
-              {places.map((place) => (
+              {navPlaces.map((place) => (
                 <Link
                   key={place.id}
                   href={`/place/${place.slug}`}
@@ -204,7 +218,7 @@ export default function NavBar() {
                     </span>
                   </div>
                   <span className="text-[9px] font-mono text-white/20">
-                    {(places.indexOf(place) + 1).toString().padStart(2, '0')}
+                    {(navPlaces.indexOf(place) + 1).toString().padStart(2, '0')}
                   </span>
                 </Link>
               ))}

@@ -125,12 +125,12 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           className="relative w-full h-screen overflow-hidden snap-start"
         >
           {item.type === 'image' ? (
-            <div
-              className="absolute inset-0 w-full h-full bg-cover bg-center"
-              style={{
-                backgroundImage: `url('${item.src}')`,
-                ...(item.objectPosition ? { backgroundPosition: item.objectPosition } : {})
-              }}
+            <img
+              src={item.src}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
             />
           ) : (
             <video
@@ -138,8 +138,15 @@ export default function PlaceClient({ place }: PlaceClientProps) {
               muted
               loop
               playsInline
-              autoPlay
               className="absolute inset-0 w-full h-full object-cover"
+              ref={(el) => {
+                if (!el) return;
+                const observer = new IntersectionObserver(
+                  ([entry]) => { entry.isIntersecting ? el.play().catch(() => {}) : el.pause(); },
+                  { threshold: 0.25 }
+                );
+                observer.observe(el);
+              }}
             />
           )}
 

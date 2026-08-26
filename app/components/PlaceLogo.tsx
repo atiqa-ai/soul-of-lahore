@@ -10,20 +10,20 @@ interface PlaceLogoProps {
 }
 
 const PLACE_IMAGES: Record<string, string> = {
-  'badshahi': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Badshahi_Mosque_%2C_Lahore.jpg',
-  'minar': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Minar-e-Pakistan%28Lahore%29.jpg',
-  'lahore-fort': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Shahi_Qila_-_The_Lahore_Fort.jpg',
-  'iqbal-tomb': 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Grave_of_Muhammad_Iqbal.jpg',
-  'wazir-khan': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Wazir_Mosque%2C_Lahore.jpg',
-  'sheesh-mahal': 'https://upload.wikimedia.org/wikipedia/commons/8/89/Sheesh_Mahal_in_Lahore_Fort.jpg',
-  'quaid-e-azam-library': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Montgomery_Hall_%28Quaid-e-Azam_Library%29_on_a_pleasant_day.jpg',
-  'library': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Montgomery_Hall_%28Quaid-e-Azam_Library%29_on_a_pleasant_day.jpg',
-  'lahore-museum': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/The_Lahore_Museum.jpg',
-  'tomb-of-jahangir': 'https://upload.wikimedia.org/wikipedia/commons/4/43/Tomb_of_Jahangir_and_gardens.jpg',
-  'jahangir-tomb': 'https://upload.wikimedia.org/wikipedia/commons/4/43/Tomb_of_Jahangir_and_gardens.jpg',
-  'lahore-zoo': 'https://upload.wikimedia.org/wikipedia/commons/2/24/Lahore_Zoo1.jpg',
-  'shalimar': 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Shalimar_Gardens_%28Lahore%29.jpg',
-  'bagh-jinnah': 'https://upload.wikimedia.org/wikipedia/commons/5/58/Bagh-e-Jinnah_Lahore_Pakistan.jpg',
+  'badshahi': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Badshahi_Mosque_%2C_Lahore.jpg?width=200',
+  'minar': 'https://upload.wikimedia.org/wikipedia/commons/9/93/Minar-e-Pakistan%28Lahore%29.jpg?width=200',
+  'lahore-fort': 'https://upload.wikimedia.org/wikipedia/commons/f/fc/Shahi_Qila_-_The_Lahore_Fort.jpg?width=200',
+  'iqbal-tomb': 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Grave_of_Muhammad_Iqbal.jpg?width=200',
+  'wazir-khan': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Wazir_Mosque%2C_Lahore.jpg?width=200',
+  'sheesh-mahal': 'https://upload.wikimedia.org/wikipedia/commons/8/89/Sheesh_Mahal_in_Lahore_Fort.jpg?width=200',
+  'quaid-e-azam-library': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Montgomery_Hall_%28Quaid-e-Azam_Library%29_on_a_pleasant_day.jpg?width=200',
+  'library': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Montgomery_Hall_%28Quaid-e-Azam_Library%29_on_a_pleasant_day.jpg?width=200',
+  'lahore-museum': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/The_Lahore_Museum.jpg?width=200',
+  'tomb-of-jahangir': 'https://upload.wikimedia.org/wikipedia/commons/4/43/Tomb_of_Jahangir_and_gardens.jpg?width=200',
+  'jahangir-tomb': 'https://upload.wikimedia.org/wikipedia/commons/4/43/Tomb_of_Jahangir_and_gardens.jpg?width=200',
+  'lahore-zoo': 'https://upload.wikimedia.org/wikipedia/commons/2/24/Lahore_Zoo1.jpg?width=200',
+  'shalimar': 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Shalimar_Gardens_%28Lahore%29.jpg?width=200',
+  'bagh-jinnah': 'https://upload.wikimedia.org/wikipedia/commons/5/58/Bagh-e-Jinnah_Lahore_Pakistan.jpg?width=200',
 };
 
 export default function PlaceLogo({ placeId, size = 48, className = '', animated = true }: PlaceLogoProps) {
