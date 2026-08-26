@@ -420,7 +420,7 @@ export default function HeroSection() {
       </div>
 
       {/* CTA button — positioned independently so scroll parallax doesn't move it */}
-      <div ref={ctaRef} className="absolute bottom-[15%] left-1/2 -translate-x-1/2 z-[5]">
+      <div ref={ctaRef} className="absolute bottom-[8%] left-1/2 -translate-x-1/2 z-[5]">
         <button onClick={() => router.push('/places')} className="cta-button group">
           <span>Enter the Soul</span>
           <svg className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">

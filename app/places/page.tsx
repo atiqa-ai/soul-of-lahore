@@ -2,10 +2,12 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { places } from '@/data/places';
 import SoulOfLahoreLogo from '@/app/components/SoulOfLahoreLogo';
+import PlaceLogo from '@/app/components/PlaceLogo';
 import CinematicTransition from '@/app/components/CinematicTransition';
 
 interface MediaPlane {
@@ -26,6 +28,7 @@ export default function PlacesPage() {
   const hoveredSlugRef = useRef<string | null>(null);
   const [navigatingTo, setNavigatingTo] = useState<string | null>(null);
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleNavigate = useCallback((slug: string) => {
     setNavigatingTo(slug);
@@ -371,17 +374,22 @@ export default function PlacesPage() {
         </div>
 
         <div className="absolute top-0 left-0 right-0 z-10 px-4 md:px-8 py-4 flex items-center justify-between pointer-events-none">
-          <button onClick={() => router.push('/')} className="pointer-events-auto flex items-center gap-2 group">
-            <div className="w-6 h-6 md:w-7 md:h-7 transition-transform duration-700 group-hover:scale-110">
-              <SoulOfLahoreLogo size={24} variant="navbar" />
+          <Link href="/" className="pointer-events-auto flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all duration-300 group">
+            <svg className="w-4 h-4 text-white/50 transition-transform group-hover:-translate-x-1 group-hover:text-amber-400/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+            </svg>
+            <div className="w-5 h-5">
+              <SoulOfLahoreLogo size={20} variant="navbar" />
             </div>
-            <span className="text-sm tracking-[0.3em] uppercase text-white/60 hover:text-white transition-colors">
-              Soul of Lahore
+            <span className="text-xs tracking-[0.3em] uppercase text-white/50 group-hover:text-white/80 transition-colors">
+              Home
             </span>
+          </Link>
+          <button onClick={() => setMenuOpen(true)} className="pointer-events-auto flex flex-col gap-1.5 p-2 group" aria-label="Open menu">
+            <span className="block w-6 h-px bg-white/50 group-hover:bg-white transition-colors" />
+            <span className="block w-4 h-px bg-white/50 group-hover:bg-white transition-colors" />
+            <span className="block w-5 h-px bg-white/50 group-hover:bg-white transition-colors" />
           </button>
-          <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/30">
-            Choose Your Journey
-          </span>
         </div>
 
         <div ref={titleRef} className="absolute inset-0 flex flex-col items-center justify-center z-[3] pointer-events-none px-6">
@@ -417,6 +425,56 @@ export default function PlacesPage() {
           </p>
         </div>
       </section>
+
+      {/* Side menu overlay */}
+      {menuOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md" onClick={() => setMenuOpen(false)} />
+      )}
+
+      {/* Side menu panel */}
+      <div className={`fixed top-0 right-0 h-full w-full max-w-sm z-50 bg-neutral-950/95 backdrop-blur-2xl border-l border-white/5 overflow-y-auto transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+        <div className="p-6 md:p-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <span className="text-[10px] tracking-[0.4em] uppercase text-amber-500/50">Landmarks</span>
+              <p className="text-xs text-white/20 mt-1">12 Souls of Lahore</p>
+            </div>
+            <button onClick={() => setMenuOpen(false)} className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/15 transition-all border border-white/5" aria-label="Close menu">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="space-y-0.5">
+            {places.map((place, i) => (
+              <Link
+                key={place.id}
+                href={`/place/${place.slug}`}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-3 py-2.5 px-3 rounded-lg text-white/40 hover:text-white hover:bg-white/[0.03] hover:pl-4 transition-all duration-300"
+              >
+                <div className="w-6 h-6 flex-shrink-0">
+                  <PlaceLogo placeId={place.id} size={20} animated={false} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="block text-sm font-medium truncate">{place.title}</span>
+                  <span className="block text-[9px] tracking-[0.15em] uppercase text-white/30 truncate">{place.subtitle}</span>
+                </div>
+                <span className="text-[9px] font-mono text-white/20">{String(i + 1).padStart(2, '0')}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-6 pt-4 border-t border-white/5 text-center">
+            <Link href="/" onClick={() => setMenuOpen(false)} className="inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-amber-400/50 hover:text-amber-300 transition-colors">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Home
+            </Link>
+          </div>
+        </div>
+      </div>
 
       <CinematicTransition
         isActive={navigatingTo !== null}
