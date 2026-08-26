@@ -125,12 +125,12 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           className="relative w-full h-screen overflow-hidden snap-start"
         >
           {item.type === 'image' ? (
-            <img
-              src={item.src}
-              alt=""
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
+            <div
+              className="absolute inset-0 w-full h-full bg-cover bg-center"
+              style={{
+                backgroundImage: `url('${item.src}')`,
+                ...(item.objectPosition ? { backgroundPosition: item.objectPosition } : {})
+              }}
             />
           ) : (
             <video
