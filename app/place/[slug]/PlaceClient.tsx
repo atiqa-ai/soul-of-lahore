@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { places as allPlaces, type Place } from '@/data/places';
 import PlaceLogo from '@/app/components/PlaceLogo';
 import SoulOfLahoreLogo from '@/app/components/SoulOfLahoreLogo';
+import ReviewsSection from '@/app/components/ReviewsSection';
 
 function getNextPlace(currentSlug: string): Place | null {
   const idx = allPlaces.findIndex(p => p.slug === currentSlug);
@@ -170,6 +171,9 @@ export default function PlaceClient({ place }: PlaceClientProps) {
           </div>
         </section>
       ))}
+
+      {/* Visitors' reviews */}
+      <ReviewsSection placeId={place.id} placeTitle={place.title} />
 
       {/* Bottom navigation */}
       <section ref={bottomRef} className="relative w-full min-h-[60vh] flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-b from-black via-gray-950 to-black overflow-hidden">
