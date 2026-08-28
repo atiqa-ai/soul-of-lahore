@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cinem-app
-          image: cinem_app:latest
+          image: atikaaa/soul-of-lahore:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
