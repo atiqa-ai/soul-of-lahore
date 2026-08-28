@@ -4,6 +4,7 @@ metadata:
   name: cinem-app
   labels:
     app: cinem-app
+  # TODO: rename this to soul-of-lahore so it matches the repo + image name
 spec:
   replicas: 1
   selector:
