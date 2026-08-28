@@ -8,6 +8,10 @@ RUN --mount=type=cache,target=/root/.npm \
 
 # Stage 2: Build Next.js
 FROM node:${NODE_VERSION} AS builder
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
