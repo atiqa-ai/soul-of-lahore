@@ -1,0 +1,146 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: monitoring
+data:
+  soul-of-lahore-monitoring.json: |
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 1,
+      "id": null,
+      "links": [],
+      "panels": [
+        {
+          "id": 1,
+          "title": "App Pods: Ready",
+          "type": "timeseries",
+          "gridPos": { "h": 7, "w": 12, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "sum by (pod) (kube_pod_status_ready{namespace=\"default\"})",
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "fillOpacity": 10, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 2,
+          "title": "App Pods: Container Restarts",
+          "type": "timeseries",
+          "gridPos": { "h": 7, "w": 12, "x": 12, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "sum by (pod) (kube_pod_container_status_restarts_total{namespace=\"default\"})",
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "fillOpacity": 10, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 3,
+          "title": "App Pods: Ready Count",
+          "type": "stat",
+          "gridPos": { "h": 5, "w": 6, "x": 0, "y": 7 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"], "values": false, "fields": "" } },
+          "targets": [
+            { "expr": "count(kube_pod_status_ready{namespace=\"default\"} == 1)", "refId": "A" }
+          ],
+          "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+        },
+        {
+          "id": 6,
+          "title": "App Pods: Desired Replicas",
+          "type": "stat",
+          "gridPos": { "h": 5, "w": 6, "x": 6, "y": 7 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"], "values": false, "fields": "" } },
+          "targets": [
+            { "expr": "sum(kube_deployment_spec_replicas{namespace=\"default\"})", "refId": "A" }
+          ],
+          "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+        },
+        {
+          "id": 4,
+          "title": "Node CPU Utilization",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percent", "max": 100, "min": 0, "custom": { "fillOpacity": 20, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 5,
+          "title": "Node Memory Utilization",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes))",
+              "legendFormat": "{{instance}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percent", "max": 100, "min": 0, "custom": { "fillOpacity": 20, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 7,
+          "title": "Application Logs (Loki)",
+          "type": "logs",
+          "gridPos": { "h": 9, "w": 24, "x": 0, "y": 20 },
+          "datasource": { "type": "loki", "uid": "loki" },
+          "targets": [
+            {
+              "editorMode": "builder",
+              "expr": "{job=\"kubernetes-pods\"}",
+              "queryType": "range",
+              "refId": "A",
+              "range": { "from": "now-1h", "to": "now" },
+              "datasource": { "type": "loki", "uid": "loki" }
+            }
+          ],
+          "options": { "showTime": true, "sortOrder": "Descending", "enableLogDetails": true, "prettifyLogMessage": false, "dedupStrategy": "none" }
+        }
+      ],
+      "refresh": "15s",
+      "schemaVersion": 39,
+      "tags": ["soul-of-lahore"],
+      "templating": { "list": [] },
+      "time": { "from": "now-1h", "to": "now" },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Soul of Lahore - Monitoring",
+      "uid": "soul-lahore-mon",
+      "version": 1,
+      "weekStart": ""
+    }
