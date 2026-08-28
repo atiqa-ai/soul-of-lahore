@@ -1,13 +1,11 @@
-# Stage 1: Install dependencies
-ARG NODE_VERSION=18-alpine
-FROM node:${NODE_VERSION} AS dependencies
+# Stage 1: install the dependencies we need to build with
+FROM node:18-alpine AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN --mount=type=cache,target=/root/.npm \
-  npm ci --no-audit --no-fund
+RUN npm ci --no-audit --no-fund
 
-# Stage 2: Build Next.js
-FROM node:${NODE_VERSION} AS builder
+# Stage 2: build the Next.js app
+FROM node:18-alpine AS builder
 ARG NEXT_PUBLIC_SUPABASE_URL
 ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
 ENV NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
@@ -18,8 +16,8 @@ COPY . .
 ENV NODE_ENV=production
 RUN npm run build
 
-# Stage 3: Production runner (minimal image)
-FROM node:${NODE_VERSION} AS runner
+# Stage 3: small runtime image that only ships what next build produced
+FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
