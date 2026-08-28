@@ -37,5 +37,5 @@ jobs:
           build-args: |
             NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
             NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/soul-of-lahore:latest
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/soul-of-lahore:latest,mode=max
