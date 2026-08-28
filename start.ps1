@@ -13,9 +13,18 @@ if (-not $ip) {
 Write-Host "Network IP: $ip" -ForegroundColor Green
 Write-Host ""
 
-# Kill any existing node processes
-Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force
-Start-Sleep -Seconds 2
+# If this app is already running on port 3000, stop only that instance.
+# (Avoids killing unrelated node processes on the machine.)
+$listener = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue |
+    Where-Object { $_.OwningProcess } | Select-Object -First 1
+if ($listener) {
+    $owner = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
+    if ($owner) {
+        Write-Host "Port 3000 is already serving this app (PID $($owner.Id)) - stopping it first..." -ForegroundColor Yellow
+        Stop-Process -Id $owner.Id -Force
+        Start-Sleep -Seconds 2
+    }
+}
 
 # Build
 Write-Host "Building..." -ForegroundColor Cyan
@@ -28,8 +37,8 @@ if ($LASTEXITCODE -ne 0) {
 
 # Start server
 Write-Host "Starting server..." -ForegroundColor Cyan
-$env:HOSTNAME="0.0.0.0"
-$proc = Start-Process -PassThru -FilePath "powershell" -ArgumentList "-NoProfile -Command `"cd '$pwd'; `$env:NODE_OPTIONS='--max-old-space-size=4096'; `$env:HOSTNAME='0.0.0.0'; npx next start -p 3000`""
+$inner = "cd '$pwd'; `$env:NODE_OPTIONS='--max-old-space-size=4096'; `$env:HOSTNAME='0.0.0.0'; npx next start -p 3000"
+$proc = Start-Process -PassThru -FilePath "powershell.exe" -ArgumentList "-NoProfile","-Command",$inner
 Start-Sleep -Seconds 5
 
 Write-Host ""
