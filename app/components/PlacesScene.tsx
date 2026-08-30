@@ -54,10 +54,10 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
         sprite.position.x = Math.cos(u.orbitAngle) * u.orbitRadius;
         sprite.position.y = Math.sin(u.orbitAngle) * u.orbitRadius;
         nameSprite.position.x = sprite.position.x;
-        nameSprite.position.y = sprite.position.y - 0.8;
+        nameSprite.position.y = sprite.position.y - 1.05;
 
         const isHovered = sprite === hoveredSprite;
-        const targetScale = isHovered ? 1.5 : 1;
+        const targetScale = isHovered ? 1.25 : 1;
         sprite.scale.x += (targetScale - sprite.scale.x) * 0.08;
         sprite.scale.y += (targetScale - sprite.scale.y) * 0.08;
 
@@ -85,7 +85,7 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
       const ce = elapsed * 0.04;
       camera.position.x = Math.sin(ce) * 0.35 + Math.sin(elapsed * 0.07) * 0.1;
       camera.position.y = 0.5 + Math.sin(elapsed * 0.03) * 0.15 + Math.sin(elapsed * 0.06) * 0.08;
-      camera.position.z = 10 + Math.sin(elapsed * 0.05) * 0.2;
+      camera.position.z = 13 + Math.sin(elapsed * 0.05) * 0.2;
       camera.lookAt(0, 0, 0);
       particles.rotation.y += 0.0003;
       renderer.render(scene, camera);
@@ -105,7 +105,7 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
       scene.background = new THREE.Color(0x050505);
 
       camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.set(0, 0.5, 10);
+      camera.position.set(0, 0.5, 13);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -222,22 +222,22 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
         });
       };
 
-      const orbitRadius = 4.0;
-      const logoScale = 1.2;
+      const orbitRadius = 5.0;
+      const logoScale = 1.0;
 
       const createNameTexture = (text: string): THREE.CanvasTexture => {
         const c = document.createElement('canvas');
-        c.width = 512;
-        c.height = 128;
+        c.width = 1024;
+        c.height = 192;
         const ctx = c.getContext('2d')!;
-        ctx.clearRect(0, 0, 512, 128);
-        ctx.font = 'bold 36px Arial,Helvetica,sans-serif';
+        ctx.clearRect(0, 0, 1024, 192);
+        ctx.font = 'bold 71px Arial,Helvetica,sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.shadowColor = 'rgba(0,0,0,0.8)';
         ctx.shadowBlur = 6;
         ctx.fillStyle = '#D4A853';
-        ctx.fillText(text, 256, 64);
+        ctx.fillText(text, 512, 96);
         const tex = new THREE.CanvasTexture(c);
         tex.colorSpace = THREE.SRGBColorSpace;
         return tex;
@@ -267,8 +267,8 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
             depthWrite: false,
           });
           const nameSprite = new THREE.Sprite(nameMat);
-          nameSprite.position.set(x, y - 0.8, 0);
-          nameSprite.scale.set(2, 0.5, 1);
+          nameSprite.position.set(x, y - 1.05, 0);
+          nameSprite.scale.set(2.8, 0.72, 1);
           group.add(nameSprite);
           fadeIn(nameMat, 'opacity', 0.8, 1);
 
