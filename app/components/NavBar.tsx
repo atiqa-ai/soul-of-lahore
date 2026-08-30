@@ -161,6 +161,17 @@ export default function NavBar() {
               <span className="text-[10px] text-white/15 mr-3 font-mono align-middle">All</span>
               Places Collection
             </Link>
+
+            <Link
+              href="/reviews"
+              onClick={closeMenu}
+              className={`menu-item block py-3 text-xl md:text-2xl font-semibold transition-all duration-300 ${
+                pathname === '/reviews' ? 'text-amber-400' : 'text-white/30 hover:text-amber-400 hover:pl-2'
+              }`}
+            >
+              <span className="text-[10px] text-white/15 mr-3 font-mono align-middle">Voices</span>
+              Visitor Reviews
+            </Link>
           </div>
 
           {/* Featured highlights */}
