@@ -191,35 +191,54 @@ export default function HeroSection() {
         };
 
         if (item.type === 'image') {
-          textureLoader.load(item.src, (tex) => {
-            try {
-              tex.colorSpace = THREE.SRGBColorSpace;
-              makePlane(tex, tex.image.width / tex.image.height);
-            } catch (_) {}
-          });
+          const loadImage = (retry = 0) => {
+            textureLoader.load(item.src, (tex) => {
+              try {
+                tex.colorSpace = THREE.SRGBColorSpace;
+                makePlane(tex, tex.image.width / tex.image.height);
+              } catch (_) {}
+            }, undefined, () => {
+              if (retry < 3) setTimeout(() => loadImage(retry + 1), 700 * (retry + 1));
+            });
+          };
+          loadImage();
         } else if (item.type === 'video') {
-          const video = document.createElement('video');
-          video.src = item.src;
-          video.muted = true;
-          video.loop = true;
-          video.playsInline = true;
-          video.crossOrigin = 'anonymous';
-          video.preload = 'none';
-          video.style.display = 'none';
-          document.body.appendChild(video);
-          videoElements.push(video);
+          const attemptVideo = (attempt: number) => {
+            const video = document.createElement('video');
+            video.src = item.src;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.crossOrigin = 'anonymous';
+            video.preload = 'none';
+            video.style.display = 'none';
+            document.body.appendChild(video);
+            videoElements.push(video);
 
-          video.addEventListener('canplay', () => {
-            try {
-              const tex = new THREE.VideoTexture(video);
-              tex.colorSpace = THREE.SRGBColorSpace;
-              tex.minFilter = THREE.LinearFilter;
-              tex.magFilter = THREE.LinearFilter;
-              makePlane(tex, video.videoWidth / video.videoHeight || 16 / 9);
-              video.play().catch(() => {});
-            } catch (_) {}
-          });
-          video.load();
+            video.addEventListener('canplay', () => {
+              try {
+                const tex = new THREE.VideoTexture(video);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                tex.minFilter = THREE.LinearFilter;
+                tex.magFilter = THREE.LinearFilter;
+                makePlane(tex, video.videoWidth / video.videoHeight || 16 / 9);
+                video.play().catch(() => {});
+              } catch (_) {}
+            });
+
+            video.addEventListener('error', () => {
+              video.pause();
+              video.removeAttribute('src');
+              video.load();
+              const idx = videoElements.indexOf(video);
+              if (idx >= 0) videoElements.splice(idx, 1);
+              if (video.parentNode) video.parentNode.removeChild(video);
+              if (attempt < 3) setTimeout(() => attemptVideo(attempt + 1), 700 * (attempt + 1));
+            }, { once: true });
+
+            video.load();
+          };
+          attemptVideo(0);
         }
       });
 

@@ -397,19 +397,19 @@ export const homeMedia: MediaItem[] = [
   { id: 'hm_day8', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Bagh-e-Jinnah_Lahore_Pakistan.jpg', caption: '', description: '' },
   { id: 'hm_day9', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Inside_of_the_main_gate_of_Lahore_Fort.jpg', caption: '', description: '' },
   // Dusk / sunset scenes
-  { id: 'hm_dusk1', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Badshahi_Mosque_Sunset.jpg', caption: '', description: '' },
+  { id: 'hm_dusk1', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Minar-E-Pakistan_Lights.jpg', caption: '', description: '' },
   { id: 'hm_dusk2', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Lahore_sunrise_seen_from_Wazir_Khan_Mosque.jpg', caption: '', description: '' },
   // Night scenes
   { id: 'hm_night1', type: 'image', src: pexelsImg(11784631), caption: '', description: '' },
-  { id: 'hm_night2', type: 'image', src: unsplashImg('XkA0rziC9sc'), caption: '', description: '' },
+  { id: 'hm_night2', type: 'image', src: pexelsImg(30511059), caption: '', description: '' },
   { id: 'hm_night3', type: 'image', src: pexelsImg(35735102), caption: '', description: '' },
   // Video (day drone)
   { id: 'hm_vid1', type: 'video', src: pexelsVid(12102419), caption: '', description: '' },
-  { id: 'hm_vid2', type: 'video', src: pexelsVid(9003971), caption: '', description: '' },
+  { id: 'hm_vid2', type: 'video', src: 'https://videos.pexels.com/video-files/9003971/9003971-hd_1920_1080_25fps.mp4', caption: '', description: '' },
   // Additional cinematic scenes
   { id: 'hm_ext1', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/6/61/Wazir_Mosque%2C_Lahore.jpg', caption: '', description: '' },
   { id: 'hm_ext2', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Sheesh_Mahal,_Shahi_Qila,_Lahore_(1).jpg', caption: '', description: '' },
-  { id: 'hm_ext3', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Badshahi_Mosque_Sunset.jpg', caption: '', description: '' },
+  { id: 'hm_ext3', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Badshahi_Mosque_%2C_Lahore.jpg', caption: '', description: '' },
   { id: 'hm_ext4', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Buddhist_Gallery_of_Lahore_Museum.jpg', caption: '', description: '' },
   { id: 'hm_ext5', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/5/52/Chini_Khanas%2C_Shalimar_Gardens%2C_Lahore%2C_Punjab%2C_Pakistan.jpg', caption: '', description: '' },
   { id: 'hm_ext6', type: 'image', src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Burial_Chamber%2C_Jehangir%27s_Tomb.jpg', caption: '', description: '' },

@@ -202,23 +202,40 @@ export default function PlacesScene({ onNavigate, onHover }: PlacesSceneProps) {
             tex.colorSpace = THREE.SRGBColorSpace;
             resolve(tex);
           };
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = () => {
-            try {
-              const canvas = buildCanvas((ctx) => {
-                const s = Math.min(img.width, img.height);
-                ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
-              });
-              const tex = new THREE.CanvasTexture(canvas);
-              tex.colorSpace = THREE.SRGBColorSpace;
-              resolve(tex);
-            } catch (_) {
-              makeFallback();
-            }
+          let attempts = 0;
+          const maxAttempts = 3;
+          const load = () => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = () => {
+              try {
+                const canvas = buildCanvas((ctx) => {
+                  const s = Math.min(img.width, img.height);
+                  ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+                });
+                const tex = new THREE.CanvasTexture(canvas);
+                tex.colorSpace = THREE.SRGBColorSpace;
+                resolve(tex);
+              } catch (_) {
+                if (attempts < maxAttempts) {
+                  attempts++;
+                  setTimeout(load, 700 * attempts);
+                } else {
+                  makeFallback();
+                }
+              }
+            };
+            img.onerror = () => {
+              if (attempts < maxAttempts) {
+                attempts++;
+                setTimeout(load, 700 * attempts);
+              } else {
+                makeFallback();
+              }
+            };
+            img.src = src;
           };
-          img.onerror = makeFallback;
-          img.src = src;
+          load();
         });
       };
 
