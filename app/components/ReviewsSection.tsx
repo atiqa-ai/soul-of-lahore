@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import Link from 'next/link';
 import type { PlaceReview } from '@/lib/reviews';
 import { REVIEW_LIMITS } from '@/lib/reviews';
 
@@ -105,6 +106,15 @@ export default function ReviewsSection({ placeId, placeTitle }: ReviewsSectionPr
   const average =
     reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : 0;
 
+  const topReviews = [...reviews]
+    .sort(
+      (a, b) =>
+        b.rating - a.rating ||
+        (new Date(b.created_at).getTime() || 0) - (new Date(a.created_at).getTime() || 0)
+    )
+    .slice(0, 2);
+  const hiddenCount = Math.max(0, reviews.length - topReviews.length);
+
   return (
     <section
       ref={sectionRef}
@@ -158,9 +168,9 @@ export default function ReviewsSection({ placeId, placeTitle }: ReviewsSectionPr
             </div>
           )}
 
-          {!loading && reviews.length > 0 && (
+          {!loading && topReviews.length > 0 && (
             <div ref={listRef} className="space-y-4">
-              {reviews.map((review) => (
+              {topReviews.map((review) => (
                 <article
                   key={review.id}
                   className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-5 backdrop-blur-sm"
@@ -184,6 +194,18 @@ export default function ReviewsSection({ placeId, placeTitle }: ReviewsSectionPr
                   <p className="text-sm text-white/75 leading-relaxed">{review.comment}</p>
                 </article>
               ))}
+            </div>
+          )}
+
+          {!loading && hiddenCount > 0 && (
+            <div className="mt-5 text-center">
+              <Link
+                href={`/reviews#${placeId}`}
+                className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-amber-400/70 hover:text-amber-300 transition-colors"
+              >
+                View all {reviews.length} reviews
+                <span className="text-amber-400/70">→</span>
+              </Link>
             </div>
           )}
         </div>
