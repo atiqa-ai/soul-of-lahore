@@ -115,14 +115,14 @@ data:
         },
         {
           "id": 7,
-          "title": "Application Logs (Loki)",
+          "title": "Website Logs",
           "type": "logs",
           "gridPos": { "h": 9, "w": 24, "x": 0, "y": 20 },
           "datasource": { "type": "loki", "uid": "loki" },
           "targets": [
             {
               "editorMode": "builder",
-              "expr": "{job=\"kubernetes-pods\"}",
+              "expr": "{namespace=\"default\"}",
               "queryType": "range",
               "refId": "A",
               "range": { "from": "now-1h", "to": "now" },
@@ -130,6 +130,44 @@ data:
             }
           ],
           "options": { "showTime": true, "sortOrder": "Descending", "enableLogDetails": true, "prettifyLogMessage": false, "dedupStrategy": "none" }
+        },
+        {
+          "id": 8,
+          "title": "App CPU Usage",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 29 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{namespace=\"default\", container!=\"\"}[5m])) * 100",
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percent", "custom": { "fillOpacity": 10, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
+        },
+        {
+          "id": 9,
+          "title": "App Memory (working set)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 29 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+          "targets": [
+            {
+              "expr": "sum by (pod) (container_memory_working_set_bytes{namespace=\"default\", container!=\"\"})",
+              "legendFormat": "{{pod}}",
+              "refId": "A"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "bytes", "custom": { "fillOpacity": 10, "lineWidth": 2, "drawStyle": "line", "showPoints": "never" } },
+            "overrides": []
+          }
         }
       ],
       "refresh": "15s",
@@ -141,6 +179,6 @@ data:
       "timezone": "browser",
       "title": "Soul of Lahore - Monitoring",
       "uid": "soul-lahore-mon",
-      "version": 1,
+      "version": 2,
       "weekStart": ""
     }

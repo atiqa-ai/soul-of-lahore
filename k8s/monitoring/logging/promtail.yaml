@@ -19,13 +19,15 @@ data:
               - localhost
             labels:
               job: kubernetes-pods
-              __path__: /var/lib/docker/containers/*/*-json.log
+              __path__: /var/log/pods/*/*/*.log
         pipeline_stages:
           - docker:
           - regex:
               source: filename
-              expression: 'containers/(?P<container>[a-f0-9]{64})/'
+              expression: '/var/log/pods/(?P<namespace>[^_]+)_(?P<pod>[a-z0-9.-]+)_(?P<uid>[a-f0-9-]{36})/(?P<container>[^/]+)/[0-9]+\.log'
           - labels:
+              namespace: ""
+              pod: ""
               container: ""
           - output:
               source: log
